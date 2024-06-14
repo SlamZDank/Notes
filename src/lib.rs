@@ -8,12 +8,22 @@ use std::{fs::File, io::Error, io::ErrorKind};
 const DATABASE_FILE: &str = "database.json";
 
 #[derive(Serialize, Deserialize, Debug)]
+enum Category {
+    Draft,
+    InProgress,
+    Cancelled,
+    Done,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 struct Entry {
     key: u64,
+    category: Category,
     title: String,
     message: String,
     pub date_created: u64,
     pub date_modified: u64,
+    tags: Vec<String>
 }
 
 pub fn now_date() -> u64 {
@@ -27,13 +37,19 @@ impl Entry {
     fn new() -> Entry {
         Entry {
             // todo: query the last element of the entries in the json file
+            category: Category::Draft,
             key: 3,
             title: String::from(""),
             message: String::from(""),
             date_created: now_date(),
             date_modified: now_date(),
+            tags: vec![]
         }
     }
+}
+
+fn refresh_json_database(entry: Entry) {
+    
 }
 
 fn create_list() -> Result<(), Error> {
