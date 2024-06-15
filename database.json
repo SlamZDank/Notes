@@ -1,44 +1,38 @@
 [
   {
     "key": 3,
+    "category": "Draft",
     "title": "",
     "message": "",
-    "date_created": 1718309655,
-    "date_modified": 1718309655
+    "date_created": 1718466618,
+    "date_modified": 1718466618,
+    "tags": []
   },
   {
     "key": 3,
+    "category": "Draft",
     "title": "",
     "message": "",
-    "date_created": 1718309657,
-    "date_modified": 1718309657
+    "date_created": 1718466626,
+    "date_modified": 1718466626,
+    "tags": []
   },
   {
     "key": 3,
+    "category": "Draft",
     "title": "",
     "message": "",
-    "date_created": 1718309658,
-    "date_modified": 1718309658
+    "date_created": 1718466627,
+    "date_modified": 1718466627,
+    "tags": []
   },
   {
     "key": 3,
+    "category": "Draft",
     "title": "",
     "message": "",
-    "date_created": 1718309659,
-    "date_modified": 1718309659
-  },
-  {
-    "key": 3,
-    "title": "",
-    "message": "",
-    "date_created": 1718309660,
-    "date_modified": 1718309660
-  },
-  {
-    "key": 3,
-    "title": "",
-    "message": "",
-    "date_created": 1718309660,
-    "date_modified": 1718309660
+    "date_created": 1718466627,
+    "date_modified": 1718466627,
+    "tags": []
   }
 ]
