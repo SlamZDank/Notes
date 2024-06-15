@@ -1,6 +1,7 @@
 mod time;
 mod note;
 
+use wasm_bindgen::prelude::*;
 use serde_json::to_string_pretty;
 use std::fs::OpenOptions;
 use std::io::{Read, Seek, SeekFrom, Write};
@@ -28,7 +29,6 @@ enum SortBy{
     Title(Mode)
 }
 
-// this adds stuff but doesnt refresh
 fn refresh_json_database(entry: Entry, action: DatabaseAction) -> Result<(), Error> {
     let mut file = OpenOptions::new()
         .write(true)
@@ -132,12 +132,8 @@ fn create_list() -> Result<(), Error> {
     Ok(())
 }
 
-fn enter_audit() {
-    let note = Entry::new();
-    println!("Would you like to edit {}? (y/N)", note.title);
-}
-
-fn add_note(item: Entry) {
+#[wasm_bindgen]
+pub fn add_note(item: Entry) {
     {
         let file = File::open(DATABASE_FILE);
         match file {
@@ -159,9 +155,7 @@ fn add_note(item: Entry) {
     .expect("Couldn't invoke action on json Database");
 }
 
-pub fn note_audit() {
-    let new_entry = Entry::new();
-}
+
 
 #[cfg(test)]
 mod tests {

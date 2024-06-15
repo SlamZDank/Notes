@@ -3,8 +3,11 @@ name = "note_taking_app"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+crate-type = ["cdylib"]
+
 [dependencies]
 chrono = "0.4.38"
 serde = {version = "1.0.203", features = ["serde_derive"]}
 serde_json = "1.0.117"
-wasm-pack = "0.12.1"
+wasm-bindgen = "0.2.92"

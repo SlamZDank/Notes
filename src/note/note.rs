@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 use crate::{current_entry_number, time::now_date};
+use wasm_bindgen::prelude::*;
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Category {
@@ -11,11 +13,12 @@ pub enum Category {
     Done,
 }
 
+#[wasm_bindgen]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Entry {
     category: Category,
     key: usize,
-    pub title: String,
+    title: String,
     message: String,
     pub date_created: u64,
     pub date_modified: u64,
