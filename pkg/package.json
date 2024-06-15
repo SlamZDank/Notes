@@ -1,0 +1,14 @@
+{
+  "name": "note_taking_app",
+  "version": "0.1.0",
+  "files": [
+    "note_taking_app_bg.wasm",
+    "note_taking_app.js",
+    "note_taking_app.d.ts"
+  ],
+  "module": "note_taking_app.js",
+  "types": "note_taking_app.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
