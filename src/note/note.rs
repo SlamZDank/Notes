@@ -12,6 +12,7 @@ enum Category {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Entry {
     category: Category,
+    key: usize,
     pub title: String,
     message: String,
     pub date_created: u64,
@@ -21,10 +22,13 @@ pub struct Entry {
 
 impl Entry {
     pub fn new() -> Entry {
+        let entry_number = current_entry_number();
         Entry {
             // todo: query the last element of the entries in the json file
+            // todo: add a way to customize the input of a valid entry
             category: Category::Draft,
-            title: format!("New Note {}", current_entry_number()),
+            key: entry_number,
+            title: format!("New Note {}", entry_number),
             message: String::from(""),
             date_created: now_date(),
             date_modified: now_date(),

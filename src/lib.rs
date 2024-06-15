@@ -9,7 +9,14 @@ use note::Entry;
 
 const DATABASE_FILE: &str = "database.json";
 
-fn refresh_json_database(entry: Entry) {
+enum DatabaseAction {
+    Add,
+    Remove(usize),
+    Modify(usize)
+}
+
+// this adds stuff but doesnt refresh
+fn refresh_json_database(entry: Entry, action: DatabaseAction) -> Result<(), Error> {
     let mut file = OpenOptions::new()
         .write(true)
         .read(true)
@@ -29,15 +36,29 @@ fn refresh_json_database(entry: Entry) {
         println!("OK");
     }
 
-    json_values.push(entry);
+    match action {
+        DatabaseAction::Add => json_values.push(entry),
 
-    //file.set_len(0).unwrap();
+        DatabaseAction::Modify(key) => {
+            if key >= json_values.len() {return Err(Error::from(ErrorKind::InvalidInput));}
+            json_values[key].modify(entry);
+        }
+
+        DatabaseAction::Remove(key) =>{
+            if key >= json_values.len() {return Err(Error::from(ErrorKind::InvalidInput));}
+            json_values.remove(key);
+        } 
+    }
+
+    file.set_len(0).unwrap();
     file.seek(SeekFrom::Start(0)).unwrap();
     
     let json = to_string_pretty(&json_values).unwrap();
     println!("{}, {:?}", json, json_values);
     file.write_all(&json.as_bytes())
         .expect("Error writing file!");
+
+    Ok(())
 }
 
 fn current_entry_number() -> usize {
@@ -87,7 +108,7 @@ fn add_note(item: Entry) {
             Ok(_) => (),
         }
     }
-    refresh_json_database(item);
+    refresh_json_database(item, DatabaseAction::Add);
 }
 
 pub fn note_audit() {
@@ -103,4 +124,16 @@ mod tests {
         let note = Entry::new();
         add_note(note);
     }
+
+    #[test]
+    fn remove_entry_by_key(){
+        let note = Entry::new();
+        refresh_json_database(note, DatabaseAction::Remove(0)).unwrap();
+    }
+
+    #[test]
+    fn modify_entry() {
+        let note = Entry::new();
+    }
+
 }

@@ -1,26 +1,20 @@
 [
   {
     "category": "Draft",
+    "key": 1,
     "title": "New Note 1",
     "message": "",
-    "date_created": 1718473120,
-    "date_modified": 1718473120,
+    "date_created": 1718491218,
+    "date_modified": 1718491218,
     "tags": []
   },
   {
     "category": "Draft",
+    "key": 2,
     "title": "New Note 2",
     "message": "",
-    "date_created": 1718473122,
-    "date_modified": 1718473122,
-    "tags": []
-  },
-  {
-    "category": "Draft",
-    "title": "New Note 3",
-    "message": "",
-    "date_created": 1718473123,
-    "date_modified": 1718473123,
+    "date_created": 1718491221,
+    "date_modified": 1718491221,
     "tags": []
   }
 ]
