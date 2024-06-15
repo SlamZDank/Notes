@@ -1,48 +1,13 @@
-use serde::{Deserialize, Serialize};
+mod time;
+mod note;
+
 use serde_json::to_string_pretty;
 use std::fs::OpenOptions;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::{fs::File, io::Error, io::ErrorKind};
-
-mod time;
-use time::now_date;
+use note::Entry;
 
 const DATABASE_FILE: &str = "database.json";
-
-#[derive(Serialize, Deserialize, Debug)]
-enum Category {
-    Draft,
-    InProgress,
-    Cancelled,
-    Done,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Entry {
-    key: u64,
-    category: Category,
-    title: String,
-    message: String,
-    pub date_created: u64,
-    pub date_modified: u64,
-    tags: Vec<String>
-}
-
-
-impl Entry {
-    fn new() -> Entry {
-        Entry {
-            // todo: query the last element of the entries in the json file
-            category: Category::Draft,
-            key: 3,
-            title: String::from(""),
-            message: String::from(""),
-            date_created: now_date(),
-            date_modified: now_date(),
-            tags: vec![]
-        }
-    }
-}
 
 fn refresh_json_database(entry: Entry) {
     let mut file = OpenOptions::new()
@@ -66,13 +31,34 @@ fn refresh_json_database(entry: Entry) {
 
     json_values.push(entry);
 
-    file.set_len(0);
-    file.seek(SeekFrom::Start(0));
+    //file.set_len(0).unwrap();
+    file.seek(SeekFrom::Start(0)).unwrap();
     
     let json = to_string_pretty(&json_values).unwrap();
     println!("{}, {:?}", json, json_values);
     file.write_all(&json.as_bytes())
         .expect("Error writing file!");
+}
+
+fn current_entry_number() -> usize {
+    let mut file = OpenOptions::new()
+        .write(true)
+        .read(true)
+        .open(DATABASE_FILE);
+    
+    if let Ok(mut inside_file) = file {
+        let mut json_values: Vec<Entry> = vec![];
+        let mut file_content = String::new();
+        inside_file.read_to_string(&mut file_content).unwrap();
+        if !file_content.is_empty() {
+            json_values = serde_json::from_str(&file_content)
+                .expect("The json file should be formatted correctly");
+    
+            println!("OK");
+            return json_values.len() + 1;
+        }
+    }
+    return 1;
 }
 
 fn create_list() -> Result<(), Error> {
@@ -103,7 +89,6 @@ fn add_note(item: Entry) {
             Ok(_) => (),
         }
     }
-    // todo read the items in the "database", add json current item then store it, easier to implement in database but my ass wouldnt think of that
     refresh_json_database(item);
 }
 
