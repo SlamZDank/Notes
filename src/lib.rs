@@ -5,14 +5,27 @@ use serde_json::to_string_pretty;
 use std::fs::OpenOptions;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::{fs::File, io::Error, io::ErrorKind};
-use note::Entry;
+use note::{Entry, Category};
 
 const DATABASE_FILE: &str = "database.json";
+const DATABASE_FILE_FILTERED: &str = "database_filtered.json";
 
 enum DatabaseAction {
     Add,
     Remove(usize),
     Modify(usize)
+}
+
+enum Mode {
+    Ascending,
+    Descending
+}
+
+enum SortBy{
+    Unsorted,
+    DateCreated(Mode),
+    DateModified(Mode),
+    Title(Mode)
 }
 
 // this adds stuff but doesnt refresh
@@ -61,6 +74,40 @@ fn refresh_json_database(entry: Entry, action: DatabaseAction) -> Result<(), Err
     Ok(())
 }
 
+fn generate_filtered_json(category: Category, sort: SortBy) -> Result<(), Error> {
+    let mut file = OpenOptions::new()
+        .write(true)
+        .read(true)
+        .open(DATABASE_FILE_FILTERED)
+        .unwrap();
+
+    let mut file_content = String::new();
+
+    file.read_to_string(&mut file_content).unwrap();
+
+    let mut json_values: Vec<Entry> = vec![];
+
+    if !file_content.is_empty() {
+        json_values = serde_json::from_str(&file_content)
+            .expect("The json file should be formatted correctly");
+
+        println!("OK");
+    }
+
+    // ! to add logical code here
+
+    file.set_len(0).unwrap();
+    file.seek(SeekFrom::Start(0)).unwrap();
+    
+    let json = to_string_pretty(&json_values).unwrap();
+    println!("{}, {:?}", json, json_values);
+    file.write_all(&json.as_bytes())
+        .expect("Error writing file!");
+
+    Ok(())
+}
+
+
 fn current_entry_number() -> usize {
     let mut file = OpenOptions::new()
         .write(true)
@@ -108,7 +155,8 @@ fn add_note(item: Entry) {
             Ok(_) => (),
         }
     }
-    refresh_json_database(item, DatabaseAction::Add);
+    refresh_json_database(item, DatabaseAction::Add)
+    .expect("Couldn't invoke action on json Database");
 }
 
 pub fn note_audit() {
@@ -134,6 +182,7 @@ mod tests {
     #[test]
     fn modify_entry() {
         let note = Entry::new();
+        refresh_json_database(note, DatabaseAction::Modify(0)).unwrap();
     }
 
 }

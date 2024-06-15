@@ -2,7 +2,9 @@ use serde::{Deserialize, Serialize};
 use crate::{current_entry_number, time::now_date};
 
 #[derive(Serialize, Deserialize, Debug)]
-enum Category {
+pub enum Category {
+    All,
+    
     Draft,
     InProgress,
     Cancelled,

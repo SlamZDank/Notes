@@ -1,2 +1,2 @@
 mod note;
-pub use note::Entry;
+pub use note::{Entry, Category};
