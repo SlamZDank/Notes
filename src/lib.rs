@@ -53,8 +53,6 @@ fn current_entry_number() -> usize {
         if !file_content.is_empty() {
             json_values = serde_json::from_str(&file_content)
                 .expect("The json file should be formatted correctly");
-    
-            println!("OK");
             return json_values.len() + 1;
         }
     }

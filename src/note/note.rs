@@ -19,7 +19,6 @@ pub struct Entry {
     tags: Vec<String>
 }
 
-
 impl Entry {
     pub fn new() -> Entry {
         Entry {
@@ -31,5 +30,20 @@ impl Entry {
             date_modified: now_date(),
             tags: vec![]
         }
+    }
+
+    pub fn modify(&mut self, other: Entry) {
+        self.title = other.title;
+        self.message = other.message;
+        self.category = other.category;
+        self.date_modified = now_date();
+        self.tags = other.tags.to_owned();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn name() {
     }
 }
