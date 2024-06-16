@@ -1,3 +1,5 @@
+//! documentation in progress
+
 mod database;
 mod locale;
 mod note;
