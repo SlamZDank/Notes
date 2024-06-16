@@ -2,11 +2,10 @@ use serde::{Deserialize, Serialize};
 use crate::{current_entry_number, locale::now_date};
 use wasm_bindgen::prelude::*;
 
-
-#[derive(Serialize, Deserialize, Debug)]
+#[wasm_bindgen]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy)]
 pub enum Category {
     All,
-    
     Draft,
     InProgress,
     Cancelled,
@@ -14,7 +13,7 @@ pub enum Category {
 }
 
 #[wasm_bindgen]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Entry {
     category: Category,
     key: usize,
@@ -25,7 +24,9 @@ pub struct Entry {
     tags: Vec<String>
 }
 
+#[wasm_bindgen]
 impl Entry {
+    #[wasm_bindgen(constructor)]
     pub fn new() -> Entry {
         let entry_number = current_entry_number();
         Entry {
@@ -41,7 +42,8 @@ impl Entry {
         }
     }
 
-    pub fn modify(&mut self, other: Entry) {
+    #[wasm_bindgen(setter)]
+    pub fn set_entry(&mut self, other: Entry) {
         self.title = other.title;
         self.message = other.message;
         self.category = other.category;
@@ -49,6 +51,7 @@ impl Entry {
         self.tags = other.tags.to_owned();
     }
 
+    #[wasm_bindgen(constructor)]
     pub fn from(category: Category, title: String, message: String, tags: Vec<String>) -> Entry {
         let entry_number = current_entry_number();
         Entry {
@@ -63,6 +66,17 @@ impl Entry {
             tags
         }
     }
+
+    #[wasm_bindgen(getter)]
+    pub fn get_category(&self) -> Category {
+        self.category
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
 }
 
 #[cfg(test)]
