@@ -5,6 +5,8 @@ edition = "2021"
 
 [lib]
 crate-type = ["cdylib"]
+name = "note_taking_app"
+path = "src/lib.rs"
 
 [dependencies]
 chrono = "0.4.38"
