@@ -71,6 +71,7 @@ pub fn refresh_json_database(entry: Option<Entry>, action: DatabaseAction) -> Re
     Ok(())
 }
 
+
 pub fn generate_filtered_json(category: Category, sort: SortBy) -> Result<(), Error> {
     let mut file = OpenOptions::new()
         .write(true)

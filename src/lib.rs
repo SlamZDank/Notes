@@ -82,7 +82,10 @@ pub fn remove_note(key: usize) {
         .expect("Couldn't invoke action on json Database");
 }
 
-
+#[wasm_bindgen]
+pub fn filter_by_mode(){
+    todo!()
+}
 
 #[cfg(test)]
 mod tests {
