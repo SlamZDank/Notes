@@ -1,19 +1,57 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
-* @param {Entry} item
+* @param {Entry} entry
 */
-export function add_note(item: Entry): void;
+export function add_note(entry: Entry): void;
+/**
+* @param {Entry} entry
+* @param {number} key
+*/
+export function modify_note(entry: Entry, key: number): void;
+/**
+* @param {number} key
+*/
+export function remove_note(key: number): void;
+/**
+*/
+export enum Category {
+  All = 0,
+  Draft = 1,
+  InProgress = 2,
+  Cancelled = 3,
+  Done = 4,
+}
 /**
 */
 export class Entry {
   free(): void;
+/**
+* @returns {Entry}
+*/
+  static new(): Entry;
+/**
+* @param {Category} category
+* @param {string} title
+* @param {string} message
+* @param {(string)[]} tags
+*/
+  constructor(category: Category, title: string, message: string, tags: (string)[]);
 /**
 */
   date_created: bigint;
 /**
 */
   date_modified: bigint;
+/**
+*/
+  entry: Entry;
+/**
+*/
+  readonly get_category: Category;
+/**
+*/
+  readonly title: string;
 }
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
@@ -25,7 +63,18 @@ export interface InitOutput {
   readonly __wbg_set_entry_date_created: (a: number, b: number) => void;
   readonly __wbg_get_entry_date_modified: (a: number) => number;
   readonly __wbg_set_entry_date_modified: (a: number, b: number) => void;
+  readonly entry_new: () => number;
+  readonly entry_set_entry: (a: number, b: number) => void;
+  readonly entry_from: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => number;
+  readonly entry_get_category: (a: number) => number;
+  readonly entry_title: (a: number, b: number) => void;
   readonly add_note: (a: number) => void;
+  readonly modify_note: (a: number, b: number) => void;
+  readonly remove_note: (a: number) => void;
+  readonly __wbindgen_malloc: (a: number, b: number) => number;
+  readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
+  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

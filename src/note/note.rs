@@ -26,7 +26,7 @@ pub struct Entry {
 
 #[wasm_bindgen]
 impl Entry {
-    #[wasm_bindgen(constructor)]
+    // #[wasm_bindgen(constructor)]
     pub fn new() -> Entry {
         let entry_number = current_entry_number();
         Entry {
