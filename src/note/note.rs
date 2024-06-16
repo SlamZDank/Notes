@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::{current_entry_number, time::now_date};
+use crate::{current_entry_number, locale::now_date};
 use wasm_bindgen::prelude::*;
 
 
@@ -47,6 +47,21 @@ impl Entry {
         self.category = other.category;
         self.date_modified = now_date();
         self.tags = other.tags.to_owned();
+    }
+
+    pub fn from(category: Category, title: String, message: String, tags: Vec<String>) -> Entry {
+        let entry_number = current_entry_number();
+        Entry {
+            // todo: query the last element of the entries in the json file
+            // todo: add a way to customize the input of a valid entry
+            category,
+            key: entry_number,
+            title,
+            message,
+            date_created: now_date(),
+            date_modified: now_date(),
+            tags
+        }
     }
 }
 

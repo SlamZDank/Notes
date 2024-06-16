@@ -27,7 +27,7 @@ enum SortBy{
 const DATABASE_FILE: &str = "database.json";
 const DATABASE_FILE_FILTERED: &str = "database_filtered.json";
 
-pub fn refresh_json_database(entry: Entry, action: DatabaseAction) -> Result<(), Error> {
+pub fn refresh_json_database(entry: Option<Entry>, action: DatabaseAction) -> Result<(), Error> {
     let mut file = OpenOptions::new()
         .write(true)
         .read(true)
@@ -48,11 +48,11 @@ pub fn refresh_json_database(entry: Entry, action: DatabaseAction) -> Result<(),
     }
 
     match action {
-        DatabaseAction::Add => json_values.push(entry),
+        DatabaseAction::Add => json_values.push(entry.unwrap()),
 
         DatabaseAction::Modify(key) => {
             if key >= json_values.len() {return Err(Error::from(ErrorKind::InvalidInput));}
-            json_values[key].modify(entry);
+            json_values[key].modify(entry.unwrap());
         }
 
         DatabaseAction::Remove(key) =>{
@@ -91,6 +91,7 @@ pub fn generate_filtered_json(category: Category, sort: SortBy) -> Result<(), Er
 
         println!("OK");
     }
+
 
     // ! to add logical code here
 
