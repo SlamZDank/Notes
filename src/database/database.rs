@@ -145,13 +145,13 @@ pub fn generate_filtered_json(
 }
 
 pub fn current_entry_number() -> usize {
-    let mut file = OpenOptions::new()
+    let file = OpenOptions::new()
         .write(true)
         .read(true)
         .open(consts::DATABASE_FILE);
 
     if let Ok(mut inside_file) = file {
-        let mut json_values: Vec<Entry> = vec![];
+        let json_values: Vec<Entry>;
         let mut file_content = String::new();
         inside_file.read_to_string(&mut file_content).unwrap();
         if !file_content.is_empty() {
