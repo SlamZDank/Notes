@@ -8,6 +8,7 @@ use note::{Category, Entry};
 use std::{fs::File, io::ErrorKind};
 use wasm_bindgen::prelude::*;
 
+
 #[wasm_bindgen]
 pub fn add_note(entry: Entry) {
     {
@@ -81,6 +82,19 @@ pub fn remove_note(key: usize) {
 pub fn filter_by_mode(category: Category, sort_by: SortBy, sorting_mode: Mode) {
     generate_filtered_json(category, sort_by, sorting_mode)
         .expect("Could not initialize the sorted file!");
+}
+
+// Use a better and shorter way to convert to a tuple (wasm bindgen binds my gens!!)
+#[wasm_bindgen]
+pub fn unix_to_utc_date(unix_time: u64) -> JsValue {
+    let (date, _) = locale::convert_unix_to_custom_date(unix_time);
+    JsValue::from_str(&date)
+}
+
+#[wasm_bindgen]
+pub fn unix_to_utc_plus_one(unix_time: u64) -> JsValue {
+    let (_, time) = locale::convert_unix_to_custom_date(unix_time);
+    JsValue::from_str(&time)
 }
 
 #[cfg(test)]

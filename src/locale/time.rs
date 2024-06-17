@@ -1,5 +1,6 @@
 use chrono::{DateTime, NaiveDateTime, Utc};
 use std::time::{SystemTime, UNIX_EPOCH};
+use wasm_bindgen::prelude::*;
 
 pub fn now_date() -> u64 {
     SystemTime::now()
