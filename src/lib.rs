@@ -1,16 +1,12 @@
-//! documentation in progress
-//! 
+mod consts;
 mod database;
 mod locale;
 mod note;
-mod consts;
 
 use database::*;
 use note::{Category, Entry};
 use std::{fs::File, io::ErrorKind};
 use wasm_bindgen::prelude::*;
-
-
 
 #[wasm_bindgen]
 pub fn add_note(entry: Entry) {
@@ -82,9 +78,9 @@ pub fn remove_note(key: usize) {
 }
 
 #[wasm_bindgen]
-pub fn filter_by_mode(category: Category, sort_by: SortBy, sorting_mode: Mode){
+pub fn filter_by_mode(category: Category, sort_by: SortBy, sorting_mode: Mode) {
     generate_filtered_json(category, sort_by, sorting_mode)
-    .expect("Could not initialize the sorted file!");
+        .expect("Could not initialize the sorted file!");
 }
 
 #[cfg(test)]

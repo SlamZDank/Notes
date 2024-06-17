@@ -1,2 +1,2 @@
 mod time;
-pub use  time::now_date;
+pub use time::now_date;

@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use crate::{current_entry_number, locale::now_date};
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -21,7 +21,7 @@ pub struct Entry {
     message: String,
     pub date_created: u64,
     pub date_modified: u64,
-    tags: Vec<String>
+    tags: Vec<String>,
 }
 
 #[wasm_bindgen]
@@ -38,7 +38,7 @@ impl Entry {
             message: String::from(""),
             date_created: now_date(),
             date_modified: now_date(),
-            tags: vec![]
+            tags: vec![],
         }
     }
 
@@ -63,7 +63,7 @@ impl Entry {
             message,
             date_created: now_date(),
             date_modified: now_date(),
-            tags
+            tags,
         }
     }
 
@@ -76,12 +76,10 @@ impl Entry {
     pub fn title(&self) -> String {
         self.title.clone()
     }
-
 }
 
 #[cfg(test)]
 mod tests {
     #[test]
-    fn name() {
-    }
+    fn name() {}
 }
