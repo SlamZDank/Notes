@@ -14,6 +14,7 @@ export function entry_title(a: number, b: number): void;
 export function add_note(a: number): void;
 export function modify_note(a: number, b: number): void;
 export function remove_note(a: number): void;
+export function filter_by_mode(a: number, b: number, c: number): void;
 export function __wbindgen_malloc(a: number, b: number): number;
 export function __wbindgen_realloc(a: number, b: number, c: number, d: number): number;
 export function __wbindgen_add_to_stack_pointer(a: number): number;

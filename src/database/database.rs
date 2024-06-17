@@ -1,8 +1,12 @@
+
 use serde_json::to_string_pretty;
 use std::fs::OpenOptions;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::{fs::File, io::Error, io::ErrorKind};
+use wasm_bindgen::prelude::*;
+
 use crate::note::{Entry, Category};
+use crate::consts;
 
 pub enum DatabaseAction {
     Add,
@@ -11,26 +15,26 @@ pub enum DatabaseAction {
 }
 
 #[derive(PartialEq)]
-enum Mode {
+#[wasm_bindgen]
+pub enum Mode {
     Ascending,
     Descending
 }
 
-enum SortBy{
+#[wasm_bindgen]
+pub enum SortBy{
     Unsorted,
-    DateCreated(Mode),
-    DateModified(Mode),
-    Title(Mode)
+    DateCreated,
+    DateModified,
+    Title
 }
 
-const DATABASE_FILE: &str = "database.json";
-const DATABASE_FILE_FILTERED: &str = "database_filtered.json";
 
 pub fn refresh_json_database(entry: Option<Entry>, action: DatabaseAction) -> Result<(), Error> {
     let mut file = OpenOptions::new()
         .write(true)
         .read(true)
-        .open(DATABASE_FILE)
+        .open(consts::DATABASE_FILE)
         .unwrap();
 
     let mut file_content = String::new();
@@ -72,11 +76,11 @@ pub fn refresh_json_database(entry: Option<Entry>, action: DatabaseAction) -> Re
 }
 
 
-pub fn generate_filtered_json(category: Category, sort: SortBy) -> Result<(), Error> {
+pub fn generate_filtered_json(category: Category, sort: SortBy, sorting_mode: Mode) -> Result<(), Error> {
     let mut file = OpenOptions::new()
         .write(true)
         .read(true)
-        .open(DATABASE_FILE_FILTERED)
+        .open(consts::DATABASE_FILE_FILTERED)
         .unwrap();
 
     let mut file_content = String::new();
@@ -99,7 +103,7 @@ pub fn generate_filtered_json(category: Category, sort: SortBy) -> Result<(), Er
     }
     
     match sort {
-        SortBy::DateCreated(sorting_mode) => {
+        SortBy::DateCreated => {
             json_values.sort_by(|entry_a, entry_b|{
                 entry_a.date_created.cmp(&entry_b.date_created)
             });
@@ -108,7 +112,7 @@ pub fn generate_filtered_json(category: Category, sort: SortBy) -> Result<(), Er
             } 
         }
 
-        SortBy::DateModified(sorting_mode) => {
+        SortBy::DateModified => {
             json_values.sort_by(|entry_a, entry_b|{
                 entry_a.date_modified.cmp(&entry_b.date_created)
             });
@@ -117,7 +121,7 @@ pub fn generate_filtered_json(category: Category, sort: SortBy) -> Result<(), Er
             } 
         }
 
-        SortBy::Title(sorting_mode) => {
+        SortBy::Title => {
             json_values.sort_by(|entry_a, entry_b|{
                 entry_a.title().cmp(&entry_b.title())
             });
@@ -144,7 +148,7 @@ pub fn current_entry_number() -> usize {
     let mut file = OpenOptions::new()
         .write(true)
         .read(true)
-        .open(DATABASE_FILE);
+        .open(consts::DATABASE_FILE);
     
     if let Ok(mut inside_file) = file {
         let mut json_values: Vec<Entry> = vec![];
@@ -160,6 +164,6 @@ pub fn current_entry_number() -> usize {
 }
 
 pub fn create_list() -> Result<(), Error> {
-    File::create(DATABASE_FILE)?;
+    File::create(consts::DATABASE_FILE)?;
     Ok(())
 }

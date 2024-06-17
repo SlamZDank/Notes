@@ -14,6 +14,12 @@ export function modify_note(entry: Entry, key: number): void;
 */
 export function remove_note(key: number): void;
 /**
+* @param {Category} category
+* @param {SortBy} sort_by
+* @param {Mode} sorting_mode
+*/
+export function filter_by_mode(category: Category, sort_by: SortBy, sorting_mode: Mode): void;
+/**
 */
 export enum Category {
   All = 0,
@@ -21,6 +27,20 @@ export enum Category {
   InProgress = 2,
   Cancelled = 3,
   Done = 4,
+}
+/**
+*/
+export enum Mode {
+  Ascending = 0,
+  Descending = 1,
+}
+/**
+*/
+export enum SortBy {
+  Unsorted = 0,
+  DateCreated = 1,
+  DateModified = 2,
+  Title = 3,
 }
 /**
 */
@@ -71,6 +91,7 @@ export interface InitOutput {
   readonly add_note: (a: number) => void;
   readonly modify_note: (a: number, b: number) => void;
   readonly remove_note: (a: number) => void;
+  readonly filter_by_mode: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;

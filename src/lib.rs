@@ -1,22 +1,21 @@
 //! documentation in progress
-
-
+//! 
 mod database;
 mod locale;
 mod note;
+mod consts;
 
 use database::*;
-use note::Entry;
+use note::{Category, Entry};
 use std::{fs::File, io::ErrorKind};
 use wasm_bindgen::prelude::*;
 
-const DATABASE_FILE: &str = "database.json";
-const DATABASE_FILE_FILTERED: &str = "database_filtered.json";
+
 
 #[wasm_bindgen]
 pub fn add_note(entry: Entry) {
     {
-        let file = File::open(DATABASE_FILE);
+        let file = File::open(consts::DATABASE_FILE);
         match file {
             Err(error) => {
                 match error.kind() {
@@ -39,7 +38,7 @@ pub fn add_note(entry: Entry) {
 #[wasm_bindgen]
 pub fn modify_note(entry: Entry, key: usize) {
     {
-        let file = File::open(DATABASE_FILE);
+        let file = File::open(consts::DATABASE_FILE);
         match file {
             Err(error) => {
                 match error.kind() {
@@ -62,7 +61,7 @@ pub fn modify_note(entry: Entry, key: usize) {
 #[wasm_bindgen]
 pub fn remove_note(key: usize) {
     {
-        let file = File::open(DATABASE_FILE);
+        let file = File::open(consts::DATABASE_FILE);
         match file {
             Err(error) => {
                 match error.kind() {
@@ -83,8 +82,9 @@ pub fn remove_note(key: usize) {
 }
 
 #[wasm_bindgen]
-pub fn filter_by_mode(){
-    todo!()
+pub fn filter_by_mode(category: Category, sort_by: SortBy, sorting_mode: Mode){
+    generate_filtered_json(category, sort_by, sorting_mode)
+    .expect("Could not initialize the sorted file!");
 }
 
 #[cfg(test)]

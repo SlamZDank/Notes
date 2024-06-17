@@ -168,8 +168,23 @@ export function remove_note(key) {
 }
 
 /**
+* @param {Category} category
+* @param {SortBy} sort_by
+* @param {Mode} sorting_mode
+*/
+export function filter_by_mode(category, sort_by, sorting_mode) {
+    wasm.filter_by_mode(category, sort_by, sorting_mode);
+}
+
+/**
 */
 export const Category = Object.freeze({ All:0,"0":"All",Draft:1,"1":"Draft",InProgress:2,"2":"InProgress",Cancelled:3,"3":"Cancelled",Done:4,"4":"Done", });
+/**
+*/
+export const Mode = Object.freeze({ Ascending:0,"0":"Ascending",Descending:1,"1":"Descending", });
+/**
+*/
+export const SortBy = Object.freeze({ Unsorted:0,"0":"Unsorted",DateCreated:1,"1":"DateCreated",DateModified:2,"2":"DateModified",Title:3,"3":"Title", });
 
 const EntryFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
