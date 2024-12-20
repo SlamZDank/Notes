@@ -7,7 +7,6 @@
 //!
 //! [`Easy`]: http://thatwaseasy.example.com
 
-
 mod consts;
 mod database;
 mod locale;
@@ -18,24 +17,20 @@ use note::{Category, Entry};
 use std::{fs::File, io::ErrorKind};
 use wasm_bindgen::prelude::*;
 
-
 #[wasm_bindgen]
 pub fn add_note(entry: Entry) {
     {
         let file = File::open(consts::DATABASE_FILE);
-        match file {
-            Err(error) => {
-                match error.kind() {
-                    // TODO: proper error handling
-                    ErrorKind::NotFound => database::create_list().unwrap(),
-                    ErrorKind::PermissionDenied => println!("Permission denied!"),
-                    _ => {
-                        println!("Unexpected error, Panicking!");
-                        panic!();
-                    }
+        if let Err(error) = file {
+            match error.kind() {
+                // TODO: proper error handling
+                ErrorKind::NotFound => database::create_list().unwrap(),
+                ErrorKind::PermissionDenied => println!("Permission denied!"),
+                _ => {
+                    println!("Unexpected error, Panicking!");
+                    panic!();
                 }
             }
-            Ok(_) => (),
         }
     }
     refresh_json_database(Some(entry), database::DatabaseAction::Add)
@@ -46,19 +41,16 @@ pub fn add_note(entry: Entry) {
 pub fn modify_note(entry: Entry, key: usize) {
     {
         let file = File::open(consts::DATABASE_FILE);
-        match file {
-            Err(error) => {
-                match error.kind() {
-                    // TODO: proper error handling
-                    ErrorKind::NotFound => database::create_list().unwrap(),
-                    ErrorKind::PermissionDenied => println!("Permission denied!"),
-                    _ => {
-                        println!("Unexpected error, Panicking!");
-                        panic!();
-                    }
+        if let Err(error) = file {
+            match error.kind() {
+                // TODO: proper error handling
+                ErrorKind::NotFound => database::create_list().unwrap(),
+                ErrorKind::PermissionDenied => println!("Permission denied!"),
+                _ => {
+                    println!("Unexpected error, Panicking!");
+                    panic!();
                 }
             }
-            Ok(_) => (),
         }
     }
     refresh_json_database(Some(entry), database::DatabaseAction::Modify(key))
@@ -69,19 +61,16 @@ pub fn modify_note(entry: Entry, key: usize) {
 pub fn remove_note(key: usize) {
     {
         let file = File::open(consts::DATABASE_FILE);
-        match file {
-            Err(error) => {
-                match error.kind() {
-                    // TODO: proper error handling
-                    ErrorKind::NotFound => database::create_list().unwrap(),
-                    ErrorKind::PermissionDenied => println!("Permission denied!"),
-                    _ => {
-                        println!("Unexpected error, Panicking!");
-                        panic!();
-                    }
+        if let Err(error) = file {
+            match error.kind() {
+                // TODO: proper error handling
+                ErrorKind::NotFound => database::create_list().unwrap(),
+                ErrorKind::PermissionDenied => println!("Permission denied!"),
+                _ => {
+                    println!("Unexpected error, Panicking!");
+                    panic!();
                 }
             }
-            Ok(_) => (),
         }
     }
     refresh_json_database(None, database::DatabaseAction::Remove(key))
